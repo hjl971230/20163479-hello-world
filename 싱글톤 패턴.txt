@@ -1,0 +1,47 @@
+싱글톤 패턴
+
+의도: 클래스를 생성하는 인스턴스가 오직 하나여야하며 인스턴스 접근 혹은 생성 역시 한가지 방식으로 제공
+
+활용: 클래스 인스턴스가 오직 하나여야 함을 보장하는 곳
+모든 클라이언트가 하나의 인스턴스만 사용해야 하는 경우
+
+=>하나의 클래스에서 오직 하나의 객체를 생성하는 것
+
+만드는 방법
+
+1. Private 생성자
+2. Private static 인스턴스 변수
+3. Public static getinstance() 함수 구현
+
+
+#include<iostream>//필요한 헤더들 호출
+using namespace std;
+
+class Singletone
+{
+private:
+	static Singletone* one;//정보를 은닉시키므로 포인터로만 접근 가능
+	//외부에서 객체를 한번 생성하고 그 이상 만들지 못하게 하기 위해 static으로 만듬
+	Singletone(){}//생성자를 private으로 막아 외부에서 객체 생성을 막음
+	~Singletone() { delete one; }
+public:
+	static Singletone* getInstance();//외부에서 객체를 사용하기 위한 접근자
+	void show();//생성 성공을 확인하기 위한 함수
+};
+Singletone* Singletone::one = nullptr;//null로 초기화
+Singletone* Singletone::getInstance()
+{
+	if (one == nullptr)//은닉한 객체가 비어있을 경우
+	{
+		one = new Singletone();//해당 포인터에 메모리 할당(==객체 생성)
+	}
+	return one;//접근자이므로 객체 본인을 리턴
+}
+void Singletone::show()
+{
+	cout << "ooo" << endl;
+}
+int main()
+{
+	Singletone::getInstance()->show();//접근자를 부르는 것이 객체 생성과 같은 의미, 기능을 사용할때는 -> 사용
+}
